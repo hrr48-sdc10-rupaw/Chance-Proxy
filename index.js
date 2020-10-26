@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const axios = require('axios');
 const port = 3000;
+require('newrelic');
 
 const app = express();
 let gameId;
@@ -16,6 +17,7 @@ app.use(function(req, res, next) {
     gameId = req.query.id;
     req['gameId'] = gameId;
   } else {
+    gameId = 1;
     req['gameId'] = gameId;
   }
   next();
@@ -44,7 +46,7 @@ app.get('/api/hero/all_info/:id', async (req, res) => {
 app.get('/moist-air/reviews', (req, res) => {
   // console.log(req);
   console.log('///////// for reviews: ', req['gameId'])
-  axios.get(`http://localhost:3002/moist-air/reviews?gameID=${gameId}`)
+  axios.get(`http://localhost:3003/moist-air/reviews?gameID=${gameId}`)
     .then(result => res.send(result.data))
     .catch(err => console.log('error: ', err));
 })
