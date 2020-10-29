@@ -9,7 +9,7 @@ const app = express();
 let gameId;
 
 app.use(function(req, res, next) {
-  console.log('running middleware')
+  // console.log('running middleware')
   // let gameId = req.query.id;
   // req['gameId'] = gameId;
   // console.log('check me: ', req['gameId']);
@@ -45,14 +45,14 @@ app.get('/api/hero/all_info/:id', async (req, res) => {
 
 app.get('/moist-air/reviews', (req, res) => {
   // console.log(req);
-  console.log('///////// for reviews: ', req['gameId'])
+  // console.log('///////// for reviews: ', req['gameId'])
   axios.get(`http://localhost:3003/moist-air/reviews?gameID=${gameId}`)
     .then(result => res.send(result.data))
     .catch(err => console.log('error: ', err));
 })
 
 app.get('/moist-air/game', (req, res) => {
-  console.log('///////// for body: ', req['gameId'])
+  // console.log('///////// for body: ', req['gameId'])
   axios.get('http://localhost:3003/moist-air/game')
     .then(result => {
       // console.log(result.data[req['gameId']])
