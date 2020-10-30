@@ -3,16 +3,20 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const axios = require('axios');
 const port = 3000;
+const cors = require('cors');
 require('newrelic');
 
 const app = express();
+
 let gameId;
 
+app.use(cors());
 app.use(function(req, res, next) {
   // console.log('running middleware')
   // let gameId = req.query.id;
   // req['gameId'] = gameId;
   // console.log('check me: ', req['gameId']);
+  // console.log(req);
   if (req.query.id !== undefined) {
     gameId = req.query.id;
     req['gameId'] = gameId;
@@ -24,10 +28,10 @@ app.use(function(req, res, next) {
 })
 app.use(logger('dev'));
 app.use(express.static('.'))
-app.use('/hero-section/dist', express.static('../hero-section/dist/'));
-app.use('/reviews/client/dist', express.static('../reviews/client/dist'));
-app.use('/body/client/dist', express.static('../body/client/dist'))
-app.use('/assets', express.static('../reviews/client/dist/assets'));
+// app.use('/hero-section/dist', express.static('../hero-section/dist/'));
+// app.use('/reviews/client/dist', express.static('../reviews/client/dist'));
+// app.use('/body/client/dist', express.static('../body/client/dist'))
+// app.use('/assets', express.static('../reviews/client/dist/assets'));
 
 app.get('/', (req, res) => {
   // gameId = req.query.id;
@@ -44,9 +48,8 @@ app.get('/api/hero/all_info/:id', async (req, res) => {
 })
 
 app.get('/moist-air/reviews', (req, res) => {
-  // console.log(req);
   // console.log('///////// for reviews: ', req['gameId'])
-  axios.get(`http://localhost:3003/moist-air/reviews?gameID=${gameId}`)
+  axios.get(`http://localhost:3003/moist-air/reviews/?gameID=${req.query.gameID}`)
     .then(result => res.send(result.data))
     .catch(err => console.log('error: ', err));
 })
